@@ -1,0 +1,184 @@
+:root {
+    --bg-color: #1e2124;
+    --panel-color: #282b30;
+    --text-color: #e3e3e3;
+    --primary-color: #4da8da;
+    --secondary-color: #7289da;
+    --light-grey: #99aab5;
+    --font-header: 'Roboto Slab', serif;
+    --font-body: 'Roboto', sans-serif;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: var(--font-body);
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.app-container {
+    width: 100%;
+    max-width: 900px;
+    background-color: var(--panel-color);
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    overflow: hidden;
+}
+
+header {
+    background-color: var(--secondary-color);
+    color: white;
+    padding: 20px 30px;
+    text-align: center;
+}
+
+header h1 {
+    font-family: var(--font-header);
+    margin: 0;
+    font-size: 2.5rem;
+}
+
+header p {
+    margin: 5px 0 0;
+    opacity: 0.8;
+}
+
+main {
+    padding: 30px;
+}
+
+.controls-panel h2 {
+    font-family: var(--font-header);
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 8px;
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+.controls-panel h2:first-child {
+    margin-top: 0;
+}
+
+#progression-select {
+    width: 100%;
+    padding: 12px;
+    background-color: #424549;
+    color: var(--text-color);
+    border: 1px solid var(--light-grey);
+    border-radius: 6px;
+    font-size: 1rem;
+}
+
+.dials-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.dial {
+    display: flex;
+    flex-direction: column;
+}
+
+.dial label {
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.dial span {
+    align-self: flex-end;
+    font-size: 0.9em;
+    color: var(--light-grey);
+}
+
+input[type="range"] {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 8px;
+    background: #424549;
+    border-radius: 5px;
+    outline: none;
+    margin-top: 5px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: var(--primary-color);
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+.action-buttons {
+    margin-top: 30px;
+}
+
+#generate-btn {
+    width: 100%;
+    padding: 15px;
+    font-size: 1.2rem;
+    font-family: var(--font-header);
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+#generate-btn:hover {
+    background-color: #3c8ac0;
+}
+
+.playback-controls {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+#play-btn {
+    padding: 10px 20px;
+    font-size: 1.1rem;
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+#play-btn:disabled {
+    background-color: #424549;
+    cursor: not-allowed;
+}
+
+.tempo-control {
+    flex-grow: 1;
+}
+
+.output-panel {
+    background-color: #fff;
+    color: black;
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 30px;
+    min-height: 150px;
+    overflow-x: auto;
+}
+
+.placeholder-text {
+    color: #666;
+    text-align: center;
+    padding-top: 40px;
+}
+
+#notation-container {
+    width: 100%;
+}
