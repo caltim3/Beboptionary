@@ -60,39 +60,54 @@ document.addEventListener('DOMContentLoaded', () => {
     // Render notation using VexFlow
     function renderNotation(notes) {
         notationContainer.innerHTML = '';
+        if (notes.length === 0) {
+             notationContainer.innerHTML = '<p class="placeholder-text">Could not generate a lick with current settings. Try adjusting the dials!</p>';
+             return;
+        }
+
         const vf = new Factory({
             renderer: { elementId: 'notation-container', width: 800, height: 150 }
         });
         const score = vf.EasyScore();
-        const system = vf.System();
 
-        // Format notes for EasyScore
-        const vexNotes = notes.map(note => {
-            let vexNote = `${note.pitch}/${note.duration}`;
-            if (note.duration.includes('t')) {
-                // Handle triplets by adding options
-                vexNote += `[options="{'type':'T'}"]`;
-            }
-            return vexNote;
+        // Create VexFlow notes string, handling accidentals properly
+        const vexNotesString = notes.map(note => {
+            const pitch = note.pitch.toLowerCase().replace('#', '##'); // Vexflow needs '##' for sharp
+            return `${pitch}/${note.duration}`;
         }).join(', ');
         
-        // Add staves and notes
+        const chords = progressionSelect.value.split('-').slice(0, 3).map(key => chordMap[key]).join(' | ');
+
+        const system = vf.System();
         system.addStave({
             voices: [
-                score.voice(score.notes(vexNotes, { stem: 'up' })),
+                score.voice(score.notes(vexNotesString, { stem: 'up' }))
             ]
         }).addClef('treble').addTimeSignature('4/4');
 
         // Add tablature
-        system.addStave({
+        const tabStave = system.addStave({
             voices: [
-                score.voice(score.tabNotes(vexNotes))
+                score.voice(score.tabNotes(vexNotesString))
             ]
         }).addClef('tab');
+        
+        // This is a placeholder for chord symbols. A real implementation would be more complex.
+        const chordsInProg = progressionData[progressionSelect.value].chords;
+        // Simplified chord placement
+        vf.text(chordsInProg.join('       '), Vex.Flow.TextNote.Justification.LEFT, -15);
 
-        // Draw everything
+
         vf.draw();
     }
+    
+    // Mapping for chord symbols above staff
+    const progressionData = {
+        "ii-V-I-C": { chords: ['Dm7', 'G7', 'Cmaj7']},
+        "ii-V-i-A": { chords: ['Bm7b5', 'E7', 'Am7']},
+        "blues-F": { chords: ['F7', 'Bb7', 'F7', 'F7']}
+    };
+
 
     // Playback using Web Audio API
     let audioContext;
@@ -108,30 +123,30 @@ document.addEventListener('DOMContentLoaded', () => {
             const oscillator = audioContext.createOscillator();
             const gainNode = audioContext.createGain();
 
-            // Calculate frequency from MIDI
-            const pitchParts = note.pitch.split('/');
-            const noteName = pitchParts[0];
-            const octave = parseInt(pitchParts[1], 10);
-            const midiNote = musicLogic.noteToMidi[noteName.toUpperCase().replace('#', 's').replace('B', 'b')] + (octave + 1) * 12;
-            oscillator.frequency.value = 440 * Math.pow(2, (midiNote - 69) / 12);
+            // Use Tonal.js to get MIDI number from pitch string (e.g., "C#4")
+            const midiNote = Tonal.Note.midi(note.pitch);
+            if (!midiNote) return; // Skip if note is invalid
+
+            oscillator.frequency.value = Tonal.Note.freq(note.pitch);
             
             // Calculate duration
-            let duration = quarterNoteTime; // Default to quarter
-            const noteType = parseInt(note.duration.replace('t',''), 10);
+            let duration = quarterNoteTime; // Default
+            const noteType = parseInt(note.duration.replace('t', ''), 10);
             if (noteType === 8) duration = quarterNoteTime / 2;
-            if (noteType === 16) duration = quarterNoteTime / 4;
-            
-            if(note.duration.includes('t')) {
+            else if (noteType === 16) duration = quarterNoteTime / 4;
+            else if (noteType === 4) duration = quarterNoteTime;
+
+            if (note.duration.includes('t')) {
                 duration *= (2/3);
             }
-
+            
             oscillator.connect(gainNode);
             gainNode.connect(audioContext.destination);
 
-            // Simple envelope
+            // Simple ADSR-like envelope
             gainNode.gain.setValueAtTime(0, currentTime);
             gainNode.gain.linearRampToValueAtTime(0.5, currentTime + 0.01);
-            gainNode.gain.linearRampToValueAtTime(0, currentTime + duration * 0.9);
+            gainNode.gain.exponentialRampToValueAtTime(0.001, currentTime + duration * 0.9);
 
             oscillator.start(currentTime);
             oscillator.stop(currentTime + duration);
