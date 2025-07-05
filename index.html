@@ -2,307 +2,35 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beboptionary - The Generative Jazz Phrase Creator</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;700&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-color: #1e2124;
-            --panel-color: #282b30;
-            --text-color: #e3e3e3;
-            --primary-color: #4da8da;
-            --secondary-color: #7289da;
-            --light-grey: #99aab5;
-            --font-header: 'Roboto Slab', serif;
-            --font-body: 'Roboto', sans-serif;
-        }
-        body { background-color: var(--bg-color); color: var(--text-color); font-family: var(--font-body); margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
-        .app-container { width: 100%; max-width: 900px; background-color: var(--panel-color); border-radius: 12px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4); overflow: hidden; }
-        header { background-color: var(--secondary-color); color: white; padding: 20px 30px; text-align: center; }
-        header h1 { font-family: var(--font-header); margin: 0; font-size: 2.5rem; }
-        header p { margin: 5px 0 0; opacity: 0.8; }
-        main { padding: 30px; }
-        .controls-panel h2 { font-family: var(--font-header); color: var(--primary-color); border-bottom: 2px solid var(--primary-color); padding-bottom: 8px; margin-top: 30px; margin-bottom: 20px; }
-        .controls-panel h2:first-child { margin-top: 0; }
-        #progression-select { width: 100%; padding: 12px; background-color: #424549; color: var(--text-color); border: 1px solid var(--light-grey); border-radius: 6px; font-size: 1rem; }
-        .dials-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
-        .dial { display: flex; flex-direction: column; }
-        .dial label { margin-bottom: 10px; font-weight: bold; }
-        .dial span { align-self: flex-end; font-size: 0.9em; color: var(--light-grey); }
-        input[type="range"] { -webkit-appearance: none; width: 100%; height: 8px; background: #424549; border-radius: 5px; outline: none; margin-top: 5px; }
-        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 20px; height: 20px; background: var(--primary-color); cursor: pointer; border-radius: 50%; }
-        .action-buttons { margin-top: 30px; }
-        #generate-btn { width: 100%; padding: 15px; font-size: 1.2rem; font-family: var(--font-header); background-color: var(--primary-color); color: white; border: none; border-radius: 6px; cursor: pointer; transition: background-color 0.2s; }
-        #generate-btn:hover { background-color: #3c8ac0; }
-        .playback-controls { display: flex; align-items: center; gap: 20px; margin-top: 20px; }
-        #play-btn { padding: 10px 20px; font-size: 1.1rem; background-color: var(--secondary-color); color: white; border: none; border-radius: 6px; cursor: pointer; }
-        #play-btn:disabled { background-color: #424549; cursor: not-allowed; }
-        .tempo-control { flex-grow: 1; }
-        .output-panel { background-color: #fdfdfd; color: black; border-radius: 8px; padding: 10px; margin-top: 30px; min-height: 150px; overflow-x: auto; }
-        .placeholder-text { color: #666; text-align: center; padding-top: 40px; }
-        .vex-tabdiv { border: none !important; }
-    </style>
+    <title>Beboptionary</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@tonaljs/tonal/browser/tonal.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vexflow@1.2.93/build/vexflow-min.js"></script>
+    <script src="https://unpkg.com/vextab/releases/vextab-div.js"></script>
 </head>
 <body>
-    <div class="app-container">
-        <header>
-            <h1>Beboptionary</h1>
-            <p>The Generative Jazz Phrase Creator</p>
-        </header>
-        <main>
-            <div class="controls-panel">
-                <h2>1. Choose a Progression</h2>
-                <select id="progression-select">
-                    <option value="ii-V-I-C">ii-V-I in C Major</option>
-                    <option value="ii-V-i-A">ii-V-i in A Minor</option>
-                    <option value="blues-F">12-Bar Blues in F</option>
-                </select>
-                <h2>2. Dial In Your Sound</h2>
-                <div class="dials-container">
-                    <div class="dial"><label for="bebop-dial">Bebop</label><input type="range" id="bebop-dial" min="0" max="100" value="50"><span id="bebop-value">50%</span></div>
-                    <div class="dial"><label for="blues-dial">Blues</label><input type="range" id="blues-dial" min="0" max="100" value="20"><span id="blues-value">20%</span></div>
-                    <div class="dial"><label for="altered-dial">Altered</label><input type="range" id="altered-dial" min="0" max="100" value="30"><span id="altered-value">30%</span></div>
-                </div>
-                <h2>3. Generate & Play</h2>
-                <div class="action-buttons">
-                    <button id="generate-btn">Generate Lick</button>
-                    <div class="playback-controls">
-                        <button id="play-btn" disabled>▶ Play</button>
-                        <div class="tempo-control">
-                            <label for="tempo-slider">Tempo: <span id="tempo-value">120</span> BPM</label>
-                            <input type="range" id="tempo-slider" min="40" max="240" value="120">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="output-panel">
-                <div id="notation-container" class="vex-tabdiv">
-                     <p class="placeholder-text">Your generated lick will appear here. Press "Generate Lick" to start!</p>
-                </div>
-            </div>
-        </main>
+    <h1>Beboptionary</h1>
+    <div id="controls">
+        <label for="progression">Progression:</label>
+        <select id="progression">
+            <option value="ii-v-i">II-V-I (Major)</option>
+            <option value="jazz-blues">Jazz Blues</option>
+            <option value="minor-ii-v-i">iiø-V7-i (Minor)</option>
+        </select>
+        <div class="dial">
+            <label>Bebop</label><input type="range" id="bebop" min="0" max="100" value="40">
+        </div>
+        <div class="dial">
+            <label>Blues</label><input type="range" id="blues" min="0" max="100" value="30">
+        </div>
+        <div class="dial">
+            <label>Altered</label><input type="range" id="altered" min="0" max="100" value="10">
+        </div>
+        <button id="generate">Generate Phrase</button>
+        <button id="play">Play</button>
     </div>
+    <div id="notation"></div>
 
-    <!-- INCLUDED LIBRARIES -->
-    <script src="https://unpkg.com/@tonaljs/tonal/browser/tonal.min.js"></script>
-    <script src="https://unpkg.com/vextab@3.0.7/releases/vextab-div.js"></script>
-
-    <!-- APPLICATION LOGIC -->
-    <script>
-        // This event listener ensures that all the HTML is loaded and the libraries are available before our code runs.
-        document.addEventListener('DOMContentLoaded', () => {
-
-            // --- MUSIC LOGIC (GENERATIVE ENGINE) ---
-            const musicLogic = (() => {
-                const { Note, Chord, Scale } = Tonal;
-                const lickFragments = [{"description":"Diatonic Arpeggio 1-3-5-7","pattern":["1P","3M","5P","7m"],"rhythm":["8","8","8","8"],"duration":2,"tags":["diatonic","arpeggio"]},{"description":"Bebop Enclosure on 3rd","pattern":[{"target":"3M","steps":["+1M","root","-1m","root"]}],"rhythm":["16","16","16","16"],"duration":1,"tags":["bebop","chromatic","enclosure"]},{"description":"Dominant Bebop Scale","pattern":["desc_bebop_dom"],"rhythm":["8","8","8","8","8","8","8","8"],"duration":4,"tags":["bebop","scale"]},{"description":"Blues Lick","pattern":["1P","b3","4P","b5","5P"],"rhythm":["8","q","8","8","8"],"duration":3,"tags":["blues"]},{"description":"Altered Dominant Run","pattern":["b9","1P","#9","3M"],"rhythm":["8t","8t","8t","8t"],"duration":1.33,"tags":["altered","bebop"]},{"description":"Chromatic Approach to Root","pattern":["-2m","-1m","1P"],"rhythm":["16","16","8"],"duration":1,"tags":["bebop","chromatic"]},{"description":"Diatonic Triplet Figure","pattern":[3,2,1,3,2,4],"rhythm":["8t","8t","8t","8t","8t","8t"],"duration":2,"tags":["diatonic","rhythm"]}];
-                const typeToScale = {'major seventh':'major','minor seventh':'dorian','dominant seventh':'mixolydian','half-diminished':'locrian'};
-
-                function generateLick(progression, settings) {
-                    let fullLick = [];
-                    let totalBeats = progression.measures * 4;
-                    let currentBeatCount = 0;
-                    let chordIndex = 0;
-
-                    while (currentBeatCount < totalBeats) {
-                        const chordName = progression.chords[chordIndex % progression.chords.length];
-                        const chord = Chord.get(chordName);
-                        
-                        const remainingBeats = totalBeats - currentBeatCount;
-                        const weightedPool = lickFragments.filter(f => f.duration <= remainingBeats);
-                        
-                        let finalPool = [];
-                        weightedPool.forEach(fragment => {
-                            let weight = 1;
-                            if (fragment.tags.includes('bebop')) weight += settings.bebop;
-                            if (fragment.tags.includes('blues')) weight += settings.blues;
-                            if (fragment.tags.includes('altered') && chord.type === 'dominant seventh') weight += settings.altered;
-                            if (fragment.tags.includes('diatonic')) weight += (100 - settings.altered / 2);
-                            for (let i = 0; i < Math.floor(weight / 25) + 1; i++) finalPool.push(fragment);
-                        });
-
-                        if (finalPool.length === 0) break;
-                        
-                        const chosenFragment = finalPool[Math.floor(Math.random() * finalPool.length)];
-                        const notes = translatePattern(chosenFragment, chord);
-                        
-                        notes.forEach(note => {
-                            // Tag the first note of a fragment with its underlying chord for rendering
-                            if (!note.chord) {
-                                note.chord = chordName;
-                            }
-                        });
-                        fullLick = fullLick.concat(notes);
-                        
-                        currentBeatCount += chosenFragment.duration;
-                        
-                        // Simple logic to advance chord - more robust logic needed for blues
-                         if (progression.measures === 12) { // It's the blues
-                             if (currentBeatCount >= 8 && chordIndex < 4) chordIndex = 4;
-                             if (currentBeatCount >= 16 && chordIndex < 6) chordIndex = 6;
-                             if (currentBeatCount >= 24 && chordIndex < 8) chordIndex = 8;
-                             if (currentBeatCount >= 28 && chordIndex < 9) chordIndex = 9;
-                             if (currentBeatCount >= 32 && chordIndex < 10) chordIndex = 10;
-                             if (currentBeatCount >= 36 && chordIndex < 11) chordIndex = 11;
-                         } else { // It's ii-V-I
-                             if (currentBeatCount >= 4 && chordIndex < 1) chordIndex = 1;
-                             if (currentBeatCount >= 8 && chordIndex < 2) chordIndex = 2;
-                         }
-                    }
-                    return fullLick;
-                }
-
-                function translatePattern(fragment, chord) {
-                    const root = chord.tonic + '4';
-                    let notes = [];
-                    const scaleName = typeToScale[chord.type] || 'major';
-                    const scale = Scale.get(`${chord.tonic} ${scaleName}`);
-
-                    fragment.pattern.forEach((p, i) => {
-                        let notePitch;
-                        const rhythm = fragment.rhythm[i] || '8';
-                        if (typeof p === 'string') {
-                            if (p.startsWith('desc_')) {
-                                let scaleNotes;
-                                if (p === 'desc_bebop_dom') {
-                                    scaleNotes = Scale.get(`${chord.tonic} mixolydian`).notes;
-                                    scaleNotes.splice(7, 0, Note.transpose(chord.tonic, '7M'));
-                                }
-                                notes = notes.concat(scaleNotes.map(n => ({ pitch: `${n}5`, duration: '8' })).reverse());
-                                return;
-                            } else { notePitch = Note.transpose(root, p); }
-                        } else if (typeof p === 'object' && p.target) {
-                            const targetInterval = chord.aliases[0].includes('m') || chord.aliases[0].includes('dim') ? '3m' : '3M';
-                            const targetNote = Note.transpose(root, targetInterval);
-                            p.steps.forEach(step => {
-                                let newNote = (step === 'root') ? targetNote : Note.transpose(targetNote, step);
-                                notes.push({ pitch: Note.simplify(newNote), duration: rhythm });
-                            });
-                            return;
-                        } else { notePitch = scale.notes[p] + '4'; }
-                        notes.push({ pitch: Note.simplify(notePitch), duration: rhythm });
-                    });
-                    return notes;
-                }
-                return { generateLick };
-            })();
-            
-            // --- UI CONTROLLER ---
-            const progressionData = {"ii-V-I-C":{chords:['Dm7','G7','Cmaj7'],measures:4,key:'C'},"ii-V-i-A":{chords:['Bm7b5','E7','Am7'],measures:4,key:'A'},"blues-F":{chords:['F7','Bb7','F7','F7','Bb7','Bb7','F7','D7','Gm7','C7','F7','C7'],measures:12,key:'F'}};
-            const progressionSelect = document.getElementById('progression-select');
-            const generateBtn = document.getElementById('generate-btn');
-            const playBtn = document.getElementById('play-btn');
-            const notationContainer = document.getElementById('notation-container');
-            const dials = {bebop:document.getElementById('bebop-dial'),blues:document.getElementById('blues-dial'),altered:document.getElementById('altered-dial')};
-            const valueSpans = {bebop:document.getElementById('bebop-value'),blues:document.getElementById('blues-value'),altered:document.getElementById('altered-value')};
-            const tempoSlider = document.getElementById('tempo-slider');
-            const tempoValue = document.getElementById('tempo-value');
-            let currentLick = [];
-
-            Object.keys(dials).forEach(key => dials[key].addEventListener('input', e => valueSpans[key].textContent = `${e.target.value}%`));
-            tempoSlider.addEventListener('input', e => tempoValue.textContent = e.target.value);
-
-            generateBtn.addEventListener('click', () => {
-                const progressionKey = progressionSelect.value;
-                const settings = {bebop:parseInt(dials.bebop.value,10),blues:parseInt(dials.blues.value,10),altered:parseInt(dials.altered.value,10)};
-                currentLick = musicLogic.generateLick(progressionData[progressionKey], settings);
-                renderNotationWithVexTab(currentLick, progressionData[progressionKey]);
-                playBtn.disabled = false;
-            });
-            
-            playBtn.addEventListener('click', () => {
-                const tempo = parseInt(tempoSlider.value, 10);
-                playLick(currentLick, tempo);
-            });
-
-            function renderNotationWithVexTab(notes) {
-                notationContainer.innerHTML = '';
-                if (!notes || notes.length === 0) {
-                    notationContainer.innerHTML = '<p class="placeholder-text">Could not generate a lick. Try again!</p>';
-                    return;
-                }
-                
-                let vexTabString = `options font-size=12 space=20\ntabstave notation=true clef=treble\n`;
-                let currentMeasureNotes = "";
-                let currentBeat = 0;
-
-                notes.forEach((note, index) => {
-                    const pitch = note.pitch.replace(/b/g, '@').replace(/#/g, '^');
-                    const durationCode = note.duration.includes('t') ? '8d' : note.duration; // Vextab uses 'd' for dot, not 't' for triplet
-                    
-                    if (note.chord && index > 0) { // Add chord symbol
-                        currentMeasureNotes += ` .${note.chord}. `;
-                    }
-                    
-                    currentMeasureNotes += `:${durationCode} ${pitch} `;
-
-                    let noteDuration = 4 / parseInt(durationCode, 10);
-                    currentBeat += noteDuration;
-                    
-                    if (currentBeat >= 4) {
-                        vexTabString += `notes ${currentMeasureNotes}\nbar\n`;
-                        currentMeasureNotes = "";
-                        currentBeat = 0;
-                    }
-                });
-
-                if (currentMeasureNotes) {
-                    vexTabString += `notes ${currentMeasureNotes}`;
-                }
-                
-                try {
-                    const { VexTab, Artist } = Vex.Flow;
-                    const vt = new VexTab(new Artist(10, 0, 800, { scale: 1.0 }));
-                    vt.parse(vexTabString);
-                    notationContainer.innerHTML = '';
-                    vt.draw(vf.getContext());
-                    notationContainer.appendChild(vt.getCanvas());
-                } catch (e) {
-                    console.error("VexTab Parsing Error:", e, "\nString:", vexTabString);
-                    notationContainer.innerHTML = '<p class="placeholder-text">Error rendering notation. Check console.</p>';
-                }
-            }
-
-            let audioContext;
-            function playLick(notes, tempo) {
-                if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                
-                const quarterNoteTime = 60 / tempo;
-                let currentTime = audioContext.currentTime + 0.1;
-
-                notes.forEach(note => {
-                    const oscillator = audioContext.createOscillator();
-                    const gainNode = audioContext.createGain();
-                    
-                    const pitch = note.pitch.replace(/\^/g, '#').replace(/@/g, 'b');
-                    const midiNote = Tonal.Note.midi(pitch);
-                    if (!midiNote) return;
-
-                    oscillator.type = 'sine';
-                    oscillator.frequency.value = Tonal.Note.freq(pitch);
-                    
-                    let duration = quarterNoteTime;
-                    const noteType = parseInt(note.duration.replace('t', ''), 10);
-                    if (noteType === 8) duration = quarterNoteTime / 2;
-                    else if (noteType === 16) duration = quarterNoteTime / 4;
-                    
-                    if (note.duration.includes('t')) duration *= (2/3);
-                    
-                    oscillator.connect(gainNode);
-                    gainNode.connect(audioContext.destination);
-
-                    gainNode.gain.setValueAtTime(0, currentTime);
-                    gainNode.gain.linearRampToValueAtTime(0.3, currentTime + 0.02);
-                    gainNode.gain.exponentialRampToValueAtTime(0.001, currentTime + duration * 0.9);
-
-                    oscillator.start(currentTime);
-                    oscillator.stop(currentTime + duration);
-                    currentTime += duration;
-                });
-            }
-        });
-    </script>
+    <script src="app.js"></script>
 </body>
 </html>
