@@ -1,159 +1,120 @@
-// js/app.js
+const progressionSelect = document.getElementById('progression');
+const bebopDial = document.getElementById('bebop');
+const bluesDial = document.getElementById('blues');
+const alteredDial = document.getElementById('altered');
+const generateBtn = document.getElementById('generate');
+const playBtn = document.getElementById('play');
+const notationDiv = document.getElementById('notation');
 
-document.addEventListener('DOMContentLoaded', () => {
-    // VexFlow setup
-    const { Factory, EasyScore, System, StaveNote, Stave, Formatter, Annotation } = Vex.Flow;
+const progressions = {
+  'ii-v-i': ['Dm7', 'G7', 'Cmaj7', 'Cmaj7'],
+  'jazz-blues': ['C7', 'F7', 'C7', 'G7'],
+  'minor-ii-v-i': ['Dm7b5', 'G7', 'Cm7', 'Cm7']
+};
 
-    // Progression Data now lives here, accessible to this script
-    const progressionData = {
-        "ii-V-I-C": { chords: ['Dm7', 'G7', 'Cmaj7'], measures: 2, key: 'C' },
-        "ii-V-i-A": { chords: ['Bm7b5', 'E7', 'Am7'], measures: 2, key: 'A' },
-        "blues-F": { chords: ['F7', 'Bb7', 'F7', 'F7', 'Bb7', 'Bb7', 'F7', 'F7', 'Gm7', 'C7', 'F7', 'C7'], measures: 12, key: 'F' }
-    };
-    
-    // DOM Elements
-    const progressionSelect = document.getElementById('progression-select');
-    const generateBtn = document.getElementById('generate-btn');
-    const playBtn = document.getElementById('play-btn');
-    const notationContainer = document.getElementById('notation-container');
-    const dials = {
-        bebop: document.getElementById('bebop-dial'),
-        blues: document.getElementById('blues-dial'),
-        altered: document.getElementById('altered-dial'),
-    };
-    const valueSpans = {
-        bebop: document.getElementById('bebop-value'),
-        blues: document.getElementById('blues-value'),
-        altered: document.getElementById('altered-value'),
-    };
-    const tempoSlider = document.getElementById('tempo-slider');
-    const tempoValue = document.getElementById('tempo-value');
-    
-    let currentLick = [];
+function scaleForChord(chord) {
+  const root = Tonal.Note.pitchClass(chord);
+  if (chord.includes('maj')) return Tonal.Scale.get(`${root} major`).notes;
+  if (chord.includes('m7b5')) return Tonal.Scale.get(`${root} locrian`).notes;
+  if (chord.includes('m')) return Tonal.Scale.get(`${root} dorian`).notes;
+  if (chord.includes('7')) return Tonal.Scale.get(`${root} mixolydian`).notes;
+  return Tonal.Scale.get(`${root} major`).notes;
+}
 
-    // --- Event Listeners ---
-    Object.keys(dials).forEach(key => {
-        dials[key].addEventListener('input', (e) => {
-            valueSpans[key].textContent = `${e.target.value}%`;
-        });
-    });
-    
-    tempoSlider.addEventListener('input', e => {
-        tempoValue.textContent = e.target.value;
-    });
+function bluesScale(root) {
+  return Tonal.Scale.get(`${root} blues`).notes;
+}
 
-    generateBtn.addEventListener('click', () => {
-        const progressionKey = progressionSelect.value;
-        const settings = {
-            bebop: parseInt(dials.bebop.value, 10),
-            blues: parseInt(dials.blues.value, 10),
-            altered: parseInt(dials.altered.value, 10),
-        };
+function alteredScale(root) {
+  return Tonal.Scale.get(`${root} altered`).notes;
+}
 
-        currentLick = musicLogic.generateLick(progressionData[progressionKey], settings);
-        renderNotation(currentLick);
-        playBtn.disabled = false;
-    });
-    
-    playBtn.addEventListener('click', () => {
-        const tempo = parseInt(tempoSlider.value, 10);
-        playLick(currentLick, tempo);
-    });
+function generateNotes(chords) {
+  const bebop = parseInt(bebopDial.value, 10) / 100;
+  const blues = parseInt(bluesDial.value, 10) / 100;
+  const altered = parseInt(alteredDial.value, 10) / 100;
 
-    // --- Rendering and Playback ---
-    function renderNotation(notes) {
-        notationContainer.innerHTML = '';
-        if (!notes || notes.length === 0) {
-            notationContainer.innerHTML = '<p class="placeholder-text">Could not generate a lick. Try different settings!</p>';
-            return;
-        }
-
-        const vf = new Factory({ renderer: { elementId: 'notation-container', width: 800, height: 180 } });
-        const score = vf.EasyScore();
-        
-        const vexNotes = notes.map(note => {
-            const pitch = note.pitch.toLowerCase().replace('#', '##');
-            const staveNote = score.note(`${pitch}/${note.duration}`);
-            
-            // Add chord symbol above the first note of a new chord
-            if (!note.isChordRendered) {
-                staveNote.addAnnotation(0, new Annotation(note.chord).setFont("Roboto Slab", 12));
-                // Mark subsequent notes of the same chord to prevent re-rendering the symbol
-                const chord = note.chord;
-                let found = false;
-                for(const n of notes){
-                    if(n === note) found = true;
-                    if(found && n.chord === chord) n.isChordRendered = true;
-                }
-            }
-            return staveNote;
-        });
-
-        // Create voices
-        const musicVoice = score.voice(vexNotes);
-        
-        // Use formatter to space the notes
-        Formatter.FormatAndJustify(musicVoice, 750);
-        
-        // Create staves
-        const musicStave = vf.Stave(10, 40, 780).addClef('treble').addTimeSignature('4/4');
-        const tabStave = vf.Stave(10, 120, 780).addClef('tab');
-
-        // Draw voices
-        musicVoice.draw(vf.getContext(), musicStave);
-        
-        // Create and draw TAB notes
-        const tabNotes = notes.map(note => {
-            // Placeholder for real fret/string logic
-            const string = Math.floor(Math.random() * 3) + 2; 
-            const fret = Tonal.Note.midi(note.pitch) - Tonal.Note.midi(`E${2+Math.floor(string/2)}`) - (string*5-5);
-            return new Vex.Flow.TabNote({
-                positions: [{ str: string, fret: fret }],
-                duration: note.duration
-            });
-        });
-        Formatter.FormatAndJustify([new Vex.Flow.Voice().addTickables(tabNotes)], 750);
-        tabNotes.forEach(n => n.setStave(tabStave).setContext(vf.getContext()).draw());
+  let notes = [];
+  chords.forEach(ch => {
+    const root = Tonal.Note.pitchClass(ch);
+    const base = scaleForChord(ch);
+    const blue = bluesScale(root);
+    const alt = alteredScale(root);
+    for (let i = 0; i < 8; i++) {
+      let pool = base;
+      const r = Math.random();
+      if (r < blues) pool = blue;
+      else if (r < blues + altered) pool = alt;
+      let pitch = pool[Math.floor(Math.random() * pool.length)];
+      if (Math.random() < bebop * 0.5) {
+        const m = Tonal.Note.midi(pitch);
+        const approach = m + (Math.random() < 0.5 ? -1 : 1);
+        notes.push({pitch: Tonal.Note.fromMidi(approach), dur: 0.125});
+      }
+      notes.push({pitch, dur: 0.125});
     }
+  });
+  return notes;
+}
 
-    let audioContext;
-    function playLick(notes, tempo) {
-        if (!audioContext) {
-            audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        }
-
-        const quarterNoteTime = 60 / tempo;
-        let currentTime = audioContext.currentTime;
-
-        notes.forEach(note => {
-            const oscillator = audioContext.createOscillator();
-            const gainNode = audioContext.createGain();
-
-            const midiNote = Tonal.Note.midi(note.pitch);
-            if (!midiNote) return;
-
-            oscillator.type = 'sine'; // A softer, more pleasant sound
-            oscillator.frequency.value = Tonal.Note.freq(note.pitch);
-            
-            let duration = quarterNoteTime;
-            const noteType = parseInt(note.duration.replace('t', ''), 10);
-            if (noteType === 8) duration = quarterNoteTime / 2;
-            else if (noteType === 16) duration = quarterNoteTime / 4;
-            
-            if (note.duration.includes('t')) {
-                duration *= (2/3);
-            }
-            
-            oscillator.connect(gainNode);
-            gainNode.connect(audioContext.destination);
-
-            gainNode.gain.setValueAtTime(0, currentTime);
-            gainNode.gain.linearRampToValueAtTime(0.3, currentTime + 0.02);
-            gainNode.gain.exponentialRampToValueAtTime(0.001, currentTime + duration * 0.9);
-
-            oscillator.start(currentTime);
-            oscillator.stop(currentTime + duration);
-            currentTime += duration;
-        });
+function pitchToTab(note) {
+  const midi = Tonal.Note.midi(note);
+  const strings = [64,59,55,50,45,40]; // E4,B3,G3,D3,A2,E2
+  let best = {fret: 0, string: 1, diff: Infinity};
+  strings.forEach((open,i)=>{
+    const fret = midi - open;
+    if (fret >= 0 && fret < 24 && fret < best.diff) {
+      best = {fret, string: i+1, diff: fret};
     }
+  });
+  return {fret: best.fret, string: best.string};
+}
+
+function notesToVexTab(notes) {
+  let vt = 'tabstave notation=true\nnotes';
+  notes.forEach(n => {
+    const tab = pitchToTab(n.pitch);
+    vt += ` :8 ${tab.fret}-${tab.string}`;
+  });
+  return vt;
+}
+
+function renderPhrase(notes) {
+  notationDiv.innerHTML = '';
+  try {
+    const VF = Vex.Flow;
+    const renderer = new VF.Renderer(notationDiv, VF.Renderer.Backends.SVG);
+    renderer.resize(800, 200);
+    const context = renderer.getContext();
+    const artist = new VexTab.Artist(10, 40, 700, {scale: 1});
+    const vextab = new VexTab(artist); 
+    vextab.parse(notesToVexTab(notes));
+    artist.render(context);
+  } catch(e) {
+    notationDiv.textContent = e.message;
+  }
+}
+
+function playNotes(notes) {
+  const ctx = new (window.AudioContext || window.webkitAudioContext)();
+  let t = ctx.currentTime;
+  const tempo = 120; // bpm
+  notes.forEach(n => {
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.frequency.value = Tonal.Note.freq(n.pitch);
+    osc.start(t);
+    osc.stop(t + (60/tempo)*0.5);
+    gain.gain.setValueAtTime(0.2, t);
+    t += (60/tempo)*0.5;
+  });
+}
+
+generateBtn.addEventListener('click', () => {
+  const chords = progressions[progressionSelect.value];
+  const notes = generateNotes(chords);
+  renderPhrase(notes);
+  playBtn.onclick = () => playNotes(notes);
 });
