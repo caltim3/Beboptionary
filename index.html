@@ -18,214 +18,53 @@
             --font-header: 'Roboto Slab', serif;
             --font-body: 'Roboto', sans-serif;
         }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: var(--font-body);
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        .app-container {
-            width: 100%;
-            max-width: 900px;
-            background-color: var(--panel-color);
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-            overflow: hidden;
-        }
-
-        header {
-            background-color: var(--secondary-color);
-            color: white;
-            padding: 20px 30px;
-            text-align: center;
-        }
-
-        header h1 {
-            font-family: var(--font-header);
-            margin: 0;
-            font-size: 2.5rem;
-        }
-
-        header p {
-            margin: 5px 0 0;
-            opacity: 0.8;
-        }
-
-        main {
-            padding: 30px;
-        }
-
-        .controls-panel h2 {
-            font-family: var(--font-header);
-            color: var(--primary-color);
-            border-bottom: 2px solid var(--primary-color);
-            padding-bottom: 8px;
-            margin-top: 30px;
-            margin-bottom: 20px;
-        }
-        .controls-panel h2:first-child {
-            margin-top: 0;
-        }
-
-        #progression-select {
-            width: 100%;
-            padding: 12px;
-            background-color: #424549;
-            color: var(--text-color);
-            border: 1px solid var(--light-grey);
-            border-radius: 6px;
-            font-size: 1rem;
-        }
-
-        .dials-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-        }
-
-        .dial {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .dial label {
-            margin-bottom: 10px;
-            font-weight: bold;
-        }
-
-        .dial span {
-            align-self: flex-end;
-            font-size: 0.9em;
-            color: var(--light-grey);
-        }
-
-        input[type="range"] {
-            -webkit-appearance: none;
-            width: 100%;
-            height: 8px;
-            background: #424549;
-            border-radius: 5px;
-            outline: none;
-            margin-top: 5px;
-        }
-
-        input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 20px;
-            height: 20px;
-            background: var(--primary-color);
-            cursor: pointer;
-            border-radius: 50%;
-        }
-
-        .action-buttons {
-            margin-top: 30px;
-        }
-
-        #generate-btn {
-            width: 100%;
-            padding: 15px;
-            font-size: 1.2rem;
-            font-family: var(--font-header);
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-
-        #generate-btn:hover {
-            background-color: #3c8ac0;
-        }
-
-        .playback-controls {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        #play-btn {
-            padding: 10px 20px;
-            font-size: 1.1rem;
-            background-color: var(--secondary-color);
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-        }
-
-        #play-btn:disabled {
-            background-color: #424549;
-            cursor: not-allowed;
-        }
-
-        .tempo-control {
-            flex-grow: 1;
-        }
-
-        .output-panel {
-            background-color: #fff;
-            color: black;
-            border-radius: 8px;
-            padding: 20px;
-            margin-top: 30px;
-            min-height: 150px;
-            overflow-x: auto;
-        }
-        
-        .placeholder-text {
-            color: #666;
-            text-align: center;
-            padding-top: 40px;
-        }
+        body { background-color: var(--bg-color); color: var(--text-color); font-family: var(--font-body); margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .app-container { width: 100%; max-width: 900px; background-color: var(--panel-color); border-radius: 12px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4); overflow: hidden; }
+        header { background-color: var(--secondary-color); color: white; padding: 20px 30px; text-align: center; }
+        header h1 { font-family: var(--font-header); margin: 0; font-size: 2.5rem; }
+        header p { margin: 5px 0 0; opacity: 0.8; }
+        main { padding: 30px; }
+        .controls-panel h2 { font-family: var(--font-header); color: var(--primary-color); border-bottom: 2px solid var(--primary-color); padding-bottom: 8px; margin-top: 30px; margin-bottom: 20px; }
+        .controls-panel h2:first-child { margin-top: 0; }
+        #progression-select { width: 100%; padding: 12px; background-color: #424549; color: var(--text-color); border: 1px solid var(--light-grey); border-radius: 6px; font-size: 1rem; }
+        .dials-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+        .dial { display: flex; flex-direction: column; }
+        .dial label { margin-bottom: 10px; font-weight: bold; }
+        .dial span { align-self: flex-end; font-size: 0.9em; color: var(--light-grey); }
+        input[type="range"] { -webkit-appearance: none; width: 100%; height: 8px; background: #424549; border-radius: 5px; outline: none; margin-top: 5px; }
+        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 20px; height: 20px; background: var(--primary-color); cursor: pointer; border-radius: 50%; }
+        .action-buttons { margin-top: 30px; }
+        #generate-btn { width: 100%; padding: 15px; font-size: 1.2rem; font-family: var(--font-header); background-color: var(--primary-color); color: white; border: none; border-radius: 6px; cursor: pointer; transition: background-color 0.2s; }
+        #generate-btn:hover { background-color: #3c8ac0; }
+        .playback-controls { display: flex; align-items: center; gap: 20px; margin-top: 20px; }
+        #play-btn { padding: 10px 20px; font-size: 1.1rem; background-color: var(--secondary-color); color: white; border: none; border-radius: 6px; cursor: pointer; }
+        #play-btn:disabled { background-color: #424549; cursor: not-allowed; }
+        .tempo-control { flex-grow: 1; }
+        .output-panel { background-color: #fdfdfd; color: black; border-radius: 8px; padding: 10px; margin-top: 30px; min-height: 150px; overflow-x: auto; }
+        .placeholder-text { color: #666; text-align: center; padding-top: 40px; }
+        .vex-tabdiv { border: none; }
     </style>
 </head>
 <body>
-
     <div class="app-container">
         <header>
             <h1>Beboptionary</h1>
             <p>The Generative Jazz Phrase Creator</p>
         </header>
-
         <main>
             <div class="controls-panel">
                 <h2>1. Choose a Progression</h2>
                 <select id="progression-select">
-                    <option value="ii-V-I-C">ii-V-I in C Major (Dm7-G7-Cmaj7)</option>
-                    <option value="ii-V-i-A">ii-V-i in A Minor (Bm7b5-E7-Am7)</option>
+                    <option value="ii-V-I-C">ii-V-I in C Major</option>
+                    <option value="ii-V-i-A">ii-V-i in A Minor</option>
                     <option value="blues-F">12-Bar Blues in F</option>
                 </select>
-
                 <h2>2. Dial In Your Sound</h2>
                 <div class="dials-container">
-                    <div class="dial">
-                        <label for="bebop-dial">Bebop</label>
-                        <input type="range" id="bebop-dial" min="0" max="100" value="50">
-                        <span id="bebop-value">50%</span>
-                    </div>
-                    <div class="dial">
-                        <label for="blues-dial">Blues</label>
-                        <input type="range" id="blues-dial" min="0" max="100" value="20">
-                        <span id="blues-value">20%</span>
-                    </div>
-                    <div class="dial">
-                        <label for="altered-dial">Altered</label>
-                        <input type="range" id="altered-dial" min="0" max="100" value="30">
-                        <span id="altered-value">30%</span>
-                    </div>
+                    <div class="dial"><label for="bebop-dial">Bebop</label><input type="range" id="bebop-dial" min="0" max="100" value="50"><span id="bebop-value">50%</span></div>
+                    <div class="dial"><label for="blues-dial">Blues</label><input type="range" id="blues-dial" min="0" max="100" value="20"><span id="blues-value">20%</span></div>
+                    <div class="dial"><label for="altered-dial">Altered</label><input type="range" id="altered-dial" min="0" max="100" value="30"><span id="altered-value">30%</span></div>
                 </div>
-
                 <h2>3. Generate & Play</h2>
                 <div class="action-buttons">
                     <button id="generate-btn">Generate Lick</button>
@@ -238,10 +77,8 @@
                     </div>
                 </div>
             </div>
-
             <div class="output-panel">
-                <!-- VexTab will render the notation inside this div -->
-                <div id="notation-container">
+                <div id="notation-container" class="vex-tabdiv">
                      <p class="placeholder-text">Your generated lick will appear here. Press "Generate Lick" to start!</p>
                 </div>
             </div>
@@ -254,79 +91,21 @@
 
     <!-- APPLICATION LOGIC -->
     <script>
+    window.onload = function() {
         // --- MUSIC LOGIC (GENERATIVE ENGINE) ---
         const musicLogic = (() => {
             const { Note, Chord, Scale } = Tonal;
-
-            const lickFragments = [
-                 {
-                    description: "Diatonic Arpeggio 1-3-5-7",
-                    pattern: ['1P', '3M', '5P', '7m'],
-                    rhythm: ['8', '8', '8', '8'],
-                    duration: 2,
-                    tags: ['diatonic', 'arpeggio']
-                },
-                {
-                    description: "Bebop Enclosure on 3rd",
-                    pattern: [{ target: '3M', steps: ['+1M', 'root', '-1m', 'root'] }],
-                    rhythm: ['16', '16', '16', '16'],
-                    duration: 1,
-                    tags: ['bebop', 'chromatic', 'enclosure']
-                },
-                {
-                    description: "Dominant Bebop Scale",
-                    pattern: ['desc_bebop_dom'],
-                    rhythm: ['8', '8', '8', '8', '8', '8', '8', '8'],
-                    duration: 4,
-                    tags: ['bebop', 'scale']
-                },
-                {
-                    description: "Blues Lick",
-                    pattern: ['1P', 'b3', '4P', 'b5', '5P'],
-                    rhythm: ['8', 'q', '8', '8', '8'],
-                    duration: 3,
-                    tags: ['blues']
-                },
-                {
-                    description: "Altered Dominant Run",
-                    pattern: ['b9', '1P', '#9', '3M'],
-                    rhythm: ['8t', '8t', '8t', '8t', '8t', '8t'],
-                    duration: 2,
-                    tags: ['altered', 'bebop']
-                },
-                {
-                    description: "Chromatic Approach to Root",
-                    pattern: ['-2m', '-1m', '1P'],
-                    rhythm: ['16', '16', '8'],
-                    duration: 1,
-                    tags: ['bebop', 'chromatic']
-                },
-                {
-                    description: "Diatonic Triplet Figure",
-                    pattern: [3, 2, 1, 3, 2, 4],
-                    rhythm: ['8t', '8t', '8t', '8t', '8t', '8t'],
-                    duration: 2,
-                    tags: ['diatonic', 'rhythm']
-                }
-            ];
-
-            const typeToScale = {
-                'major seventh': 'major',
-                'minor seventh': 'dorian',
-                'dominant seventh': 'mixolydian',
-                'half-diminished': 'locrian'
-            };
+            const lickFragments = [{"description":"Diatonic Arpeggio 1-3-5-7","pattern":["1P","3M","5P","7m"],"rhythm":["8","8","8","8"],"duration":2,"tags":["diatonic","arpeggio"]},{"description":"Bebop Enclosure on 3rd","pattern":[{"target":"3M","steps":["+1M","root","-1m","root"]}],"rhythm":["16","16","16","16"],"duration":1,"tags":["bebop","chromatic","enclosure"]},{"description":"Dominant Bebop Scale","pattern":["desc_bebop_dom"],"rhythm":["8","8","8","8","8","8","8","8"],"duration":4,"tags":["bebop","scale"]},{"description":"Blues Lick","pattern":["1P","b3","4P","b5","5P"],"rhythm":["8","q","8","8","8"],"duration":3,"tags":["blues"]},{"description":"Altered Dominant Run","pattern":["b9","1P","#9","3M"],"rhythm":["8t","8t","8t","8t"],"duration":1.33,"tags":["altered","bebop"]},{"description":"Chromatic Approach to Root","pattern":["-2m","-1m","1P"],"rhythm":["16","16","8"],"duration":1,"tags":["bebop","chromatic"]},{"description":"Diatonic Triplet Figure","pattern":[3,2,1,3,2,4],"rhythm":["8t","8t","8t","8t","8t","8t"],"duration":2,"tags":["diatonic","rhythm"]}];
+            const typeToScale = {'major seventh':'major','minor seventh':'dorian','dominant seventh':'mixolydian','half-diminished':'locrian'};
 
             function generateLick(progression, settings) {
                 let fullLick = [];
                 let totalDuration = progression.measures * 4;
                 let currentDuration = 0;
                 let chordIndex = 0;
-
                 while (currentDuration < totalDuration) {
                     const chordName = progression.chords[chordIndex % progression.chords.length];
                     const chord = Chord.get(chordName);
-
                     const weightedPool = lickFragments.filter(f => f.duration <= (totalDuration - currentDuration));
                     let finalPool = [];
                     weightedPool.forEach(fragment => {
@@ -334,24 +113,19 @@
                         if (fragment.tags.includes('bebop')) weight += settings.bebop;
                         if (fragment.tags.includes('blues')) weight += settings.blues;
                         if (fragment.tags.includes('altered') && chord.type === 'dominant seventh') weight += settings.altered;
-                        if (fragment.tags.includes('diatonic')) weight += (100 - settings.altered / 2); // Less likely to be purely diatonic if altered is high
-                        
-                        for (let i = 0; i < Math.floor(weight / 20); i++) finalPool.push(fragment);
+                        if (fragment.tags.includes('diatonic')) weight += (100 - settings.altered / 2);
+                        for (let i = 0; i < Math.floor(weight / 25); i++) finalPool.push(fragment);
                     });
-
                     if (finalPool.length === 0) break;
-
                     const chosenFragment = finalPool[Math.floor(Math.random() * finalPool.length)];
                     const notes = translatePattern(chosenFragment, chord);
                     notes.forEach(note => {
                         note.chord = chordName;
                         fullLick.push(note);
                     });
-                    
                     currentDuration += chosenFragment.duration;
-                    if (currentDuration >= (chordIndex + 1) * (progression.measures === 12 ? 1 : 2) * 2) {
-                        chordIndex++;
-                    }
+                    if (progression.measures > 4 && currentDuration > (chordIndex + 1) * 4) chordIndex++;
+                    else if (progression.measures <=4 && currentDuration > (chordIndex + 1) * 2) chordIndex++;
                 }
                 return fullLick;
             }
@@ -361,7 +135,6 @@
                 let notes = [];
                 const scaleName = typeToScale[chord.type] || 'major';
                 const scale = Scale.get(`${chord.tonic} ${scaleName}`);
-
                 fragment.pattern.forEach((p, i) => {
                     let notePitch;
                     const rhythm = fragment.rhythm[i] || '8';
@@ -374,9 +147,7 @@
                             }
                             notes = notes.concat(scaleNotes.map(n => ({ pitch: `${n}5`, duration: '8' })).reverse());
                             return;
-                        } else {
-                            notePitch = Note.transpose(root, p);
-                        }
+                        } else { notePitch = Note.transpose(root, p); }
                     } else if (typeof p === 'object' && p.target) {
                         const targetInterval = chord.aliases[0].includes('m') || chord.aliases[0].includes('dim') ? '3m' : '3M';
                         const targetNote = Note.transpose(root, targetInterval);
@@ -385,168 +156,138 @@
                             notes.push({ pitch: Note.simplify(newNote), duration: rhythm });
                         });
                         return;
-                    } else {
-                        notePitch = scale.notes[p] + '4';
-                    }
+                    } else { notePitch = scale.notes[p] + '4'; }
                     notes.push({ pitch: Note.simplify(notePitch), duration: rhythm });
                 });
-
-                return notes.map(n => ({ ...n, pitch: n.pitch.replace(/b/g,'@').replace(/#/g,'^') })); // VexTab formatting
+                return notes;
             }
-
             return { generateLick };
         })();
         
         // --- UI CONTROLLER ---
-        document.addEventListener('DOMContentLoaded', () => {
-            const { VexTab, Artist } = Vex.Flow;
+        const progressionData = {"ii-V-I-C":{chords:['Dm7','G7','Cmaj7'],measures:4,key:'C'},"ii-V-i-A":{chords:['Bm7b5','E7','Am7'],measures:4,key:'A'},"blues-F":{chords:['F7','Bb7','F7','F7','Bb7','Bb7','F7','D7','Gm7','C7','F7','C7'],measures:12,key:'F'}};
+        const progressionSelect = document.getElementById('progression-select');
+        const generateBtn = document.getElementById('generate-btn');
+        const playBtn = document.getElementById('play-btn');
+        const notationContainer = document.getElementById('notation-container');
+        const dials = {bebop:document.getElementById('bebop-dial'),blues:document.getElementById('blues-dial'),altered:document.getElementById('altered-dial')};
+        const valueSpans = {bebop:document.getElementById('bebop-value'),blues:document.getElementById('blues-value'),altered:document.getElementById('altered-value')};
+        const tempoSlider = document.getElementById('tempo-slider');
+        const tempoValue = document.getElementById('tempo-value');
+        let currentLick = [];
 
-            const progressionData = {
-                "ii-V-I-C": { chords: ['Dm7', 'G7', 'Cmaj7'], measures: 2, key: 'C' },
-                "ii-V-i-A": { chords: ['Bm7b5', 'E7', 'Am7'], measures: 2, key: 'A' },
-                "blues-F": { chords: ['F7', 'Bb7', 'F7', 'F7', 'Bb7', 'Bb7', 'F7', 'D7', 'Gm7', 'C7', 'F7', 'C7'], measures: 12, key: 'F' }
-            };
-            
-            const progressionSelect = document.getElementById('progression-select');
-            const generateBtn = document.getElementById('generate-btn');
-            const playBtn = document.getElementById('play-btn');
-            const notationContainer = document.getElementById('notation-container');
-            const dials = {
-                bebop: document.getElementById('bebop-dial'),
-                blues: document.getElementById('blues-dial'),
-                altered: document.getElementById('altered-dial'),
-            };
-            const valueSpans = {
-                bebop: document.getElementById('bebop-value'),
-                blues: document.getElementById('blues-value'),
-                altered: document.getElementById('altered-value'),
-            };
-            const tempoSlider = document.getElementById('tempo-slider');
-            const tempoValue = document.getElementById('tempo-value');
-            
-            let currentLick = [];
+        Object.keys(dials).forEach(key => dials[key].addEventListener('input', e => valueSpans[key].textContent = `${e.target.value}%`));
+        tempoSlider.addEventListener('input', e => tempoValue.textContent = e.target.value);
 
-            Object.keys(dials).forEach(key => {
-                dials[key].addEventListener('input', (e) => {
-                    valueSpans[key].textContent = `${e.target.value}%`;
-                });
-            });
-            
-            tempoSlider.addEventListener('input', e => {
-                tempoValue.textContent = e.target.value;
-            });
-
-            generateBtn.addEventListener('click', () => {
-                const progressionKey = progressionSelect.value;
-                const settings = {
-                    bebop: parseInt(dials.bebop.value, 10),
-                    blues: parseInt(dials.blues.value, 10),
-                    altered: parseInt(dials.altered.value, 10),
-                };
-
-                currentLick = musicLogic.generateLick(progressionData[progressionKey], settings);
-                renderNotationWithVexTab(currentLick, progressionData[progressionKey]);
-                playBtn.disabled = false;
-            });
-            
-            playBtn.addEventListener('click', () => {
-                const tempo = parseInt(tempoSlider.value, 10);
-                playLick(currentLick, tempo);
-            });
-
-            function renderNotationWithVexTab(notes, progInfo) {
-                notationContainer.innerHTML = '';
-                if (!notes || notes.length === 0) {
-                    notationContainer.innerHTML = '<p class="placeholder-text">Could not generate a lick. Please try again.</p>';
-                    return;
-                }
-
-                let vexTabString = `options font-size=12 space=20\n tabstave notation=true clef=treble\n`;
-
-                let currentBeat = 0;
-                let measureNotes = [];
-                let chordAnnotations = [];
-                let chordIndex = 0;
-                
-                notes.forEach((note, index) => {
-                    const noteType = parseInt(note.duration.replace('t', ''), 10);
-                    let noteDuration = 4 / noteType;
-                    if(note.duration.includes('t')) noteDuration *= (2/3);
-
-                    if (currentBeat === 0) {
-                        const chord = progInfo.chords[chordIndex % progInfo.chords.length];
-                        chordAnnotations.push(`:q ${chord}`);
-                        chordIndex++;
-                    }
-                    
-                    measureNotes.push(note);
-                    currentBeat += noteDuration;
-
-                    if (currentBeat >= 4) {
-                        vexTabString += `notes ${measureNotes.map(n => `:${n.duration} ${n.pitch}`).join(' ')}\n`;
-                        vexTabString += `text :q, .1, ${chordAnnotations.join(', ')}\n`;
-                        vexTabString += 'bar\n';
-                        
-                        measureNotes = [];
-                        chordAnnotations = [];
-                        currentBeat = 0;
-                    }
-                });
-
-                if (measureNotes.length > 0) {
-                    vexTabString += `notes ${measureNotes.map(n => `:${n.duration} ${n.pitch}`).join(' ')}\n`;
-                    if (chordAnnotations.length > 0) {
-                        vexTabString += `text :q, .1, ${chordAnnotations.join(', ')}\n`;
-                    }
-                }
-                
-                try {
-                    // THIS IS THE CORRECTED LINE
-                    Vex.Flow.renderVexTab(new Vex.Flow.VexTab(new Vex.Flow.Artist(10, 10, 800, { scale: 1.0 })), vexTabString, notationContainer);
-                } catch (e) {
-                    console.error("VexTab Parsing Error:", e);
-                    notationContainer.innerHTML = '<p class="placeholder-text">Error rendering notation. Check console.</p>';
-                }
-            }
-
-            let audioContext;
-            function playLick(notes, tempo) {
-                if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                
-                const quarterNoteTime = 60 / tempo;
-                let currentTime = audioContext.currentTime + 0.1;
-
-                notes.forEach(note => {
-                    const oscillator = audioContext.createOscillator();
-                    const gainNode = audioContext.createGain();
-                    
-                    const pitch = note.pitch.replace(/\^/g, '#').replace(/@/g, 'b');
-                    const midiNote = Tonal.Note.midi(pitch);
-                    if (!midiNote) return;
-
-                    oscillator.type = 'sine';
-                    oscillator.frequency.value = Tonal.Note.freq(pitch);
-                    
-                    let duration = quarterNoteTime;
-                    const noteType = parseInt(note.duration.replace('t', ''), 10);
-                    if (noteType === 8) duration = quarterNoteTime / 2;
-                    else if (noteType === 16) duration = quarterNoteTime / 4;
-                    
-                    if (note.duration.includes('t')) duration *= (2/3);
-                    
-                    oscillator.connect(gainNode);
-                    gainNode.connect(audioContext.destination);
-
-                    gainNode.gain.setValueAtTime(0, currentTime);
-                    gainNode.gain.linearRampToValueAtTime(0.3, currentTime + 0.02);
-                    gainNode.gain.exponentialRampToValueAtTime(0.001, currentTime + duration * 0.9);
-
-                    oscillator.start(currentTime);
-                    oscillator.stop(currentTime + duration);
-                    currentTime += duration;
-                });
-            }
+        generateBtn.addEventListener('click', () => {
+            const progressionKey = progressionSelect.value;
+            const settings = {bebop:parseInt(dials.bebop.value,10),blues:parseInt(dials.blues.value,10),altered:parseInt(dials.altered.value,10)};
+            currentLick = musicLogic.generateLick(progressionData[progressionKey], settings);
+            renderNotationWithVexTab(currentLick);
+            playBtn.disabled = false;
         });
+        
+        playBtn.addEventListener('click', () => {
+            const tempo = parseInt(tempoSlider.value, 10);
+            playLick(currentLick, tempo);
+        });
+
+        function renderNotationWithVexTab(notes) {
+            notationContainer.innerHTML = '';
+            if (!notes || notes.length === 0) {
+                notationContainer.innerHTML = '<p class="placeholder-text">Could not generate a lick. Try again!</p>';
+                return;
+            }
+            
+            let vexTabString = `options font-size=12 space=20\n tabstave notation=true clef=treble\n`;
+            let notesString = "notes ";
+            let currentBeat = 0;
+            let lastChord = null;
+            let chordAnnotations = [];
+
+            notes.forEach((note, index) => {
+                // Add chord symbol if it's new
+                if (note.chord !== lastChord) {
+                    chordAnnotations.push(`:q .${currentBeat*2+1} ${note.chord}`);
+                    lastChord = note.chord;
+                }
+                
+                // Format note for VexTab
+                const pitch = note.pitch.replace(/b/g, '@').replace(/#/g, '^');
+                const durationCode = note.duration.includes('t') ? ':8@T' : `:${note.duration}`;
+                notesString += `${durationCode} ${pitch} `;
+                
+                let noteDuration = 4 / parseInt(note.duration.replace('t', ''), 10);
+                if (note.duration.includes('t')) noteDuration *= 2/3;
+                currentBeat += noteDuration;
+
+                if (currentBeat >= 4) {
+                    vexTabString += `${notesString}\n`;
+                    if(chordAnnotations.length > 0) vexTabString += `text ${chordAnnotations.join(',')}\n`;
+                    vexTabString += 'bar\n';
+                    notesString = "notes ";
+                    chordAnnotations = [];
+                    currentBeat = 0;
+                }
+            });
+
+            if (notesString !== "notes ") {
+                 vexTabString += `${notesString}\n`;
+                 if(chordAnnotations.length > 0) vexTabString += `text ${chordAnnotations.join(',')}\n`;
+            }
+            
+            try {
+                // VexTab is attached to the window, but we need Vex.Flow for Artist
+                const { VexTab, Artist } = Vex.Flow;
+                const vt = new VexTab(new Artist(10, 0, 800, { scale: 1.0 }));
+                vt.parse(vexTabString);
+                notationContainer.innerHTML = ''; // Clear placeholder
+                notationContainer.appendChild(vt.getCanvas());
+            } catch (e) {
+                console.error("VexTab Parsing Error:", e);
+                console.log("VexTab String:", vexTabString);
+                notationContainer.innerHTML = '<p class="placeholder-text">Error rendering notation. Check console.</p>';
+            }
+        }
+
+        let audioContext;
+        function playLick(notes, tempo) {
+            if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            
+            const quarterNoteTime = 60 / tempo;
+            let currentTime = audioContext.currentTime + 0.1;
+
+            notes.forEach(note => {
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                const pitch = note.pitch.replace(/\^/g, '#').replace(/@/g, 'b');
+                const midiNote = Tonal.Note.midi(pitch);
+                if (!midiNote) return;
+
+                oscillator.type = 'sine';
+                oscillator.frequency.value = Tonal.Note.freq(pitch);
+                
+                let duration = quarterNoteTime;
+                const noteType = parseInt(note.duration.replace('t', ''), 10);
+                if (noteType === 8) duration = quarterNoteTime / 2;
+                else if (noteType === 16) duration = quarterNoteTime / 4;
+                
+                if (note.duration.includes('t')) duration *= (2/3);
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+
+                gainNode.gain.setValueAtTime(0, currentTime);
+                gainNode.gain.linearRampToValueAtTime(0.3, currentTime + 0.02);
+                gainNode.gain.exponentialRampToValueAtTime(0.001, currentTime + duration * 0.9);
+
+                oscillator.start(currentTime);
+                oscillator.stop(currentTime + duration);
+                currentTime += duration;
+            });
+        }
+    };
     </script>
 </body>
 </html>
